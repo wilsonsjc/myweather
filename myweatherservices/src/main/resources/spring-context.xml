@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:jaxrs="http://cxf.apache.org/jaxrs" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+	<context:component-scan base-package="com.myweather.dao" />
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/MYWEATHER" expected-type="javax.sql.DataSource" />
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource"/>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hiberlass">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.show_sql">false</prop> 
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.connection.autocommit">true</prop>
+				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			</props>
+		</property>
+        <property name="packagesToScan">
+        	<list>        	
+        		<value>com.myweather.model</value>
+        	</list>        	
+        </property>         
+	</bean>
+	
+	<tx:annotation-driven />
+	
+	<bean id="transactionManager"  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="abstractDao" class="com.myweather.dao.AbstractHibernateDAO" abstract="true" >
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="zipCodeDao" class="com.myweather.dao.ZipcodeDAO" parent="abstractDao" />
+	
+	<bean id="weatherService" class="com.myweather.service.WeatherService" >
+		<constructor-arg ref="zipCodeDao"/>
+		<property name="weatherMapper" ref="abc" />
+	</bean>
+	<bean id="myWeatherEndPoint" class="com.myweather.endpoint.MyWeatherEndPoint" >
+		<property name="weatherService" ref="weatherService" />
+	</bean>
+	
+	<bean id="abc" class="com.myweather.service.mapper.WeatherMapper" />
+
+	<jaxrs:server id="dclRestServer" address="/">
+		<jaxrs:serviceBeans>
+			<ref bean="myWeatherEndPoint" />
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+	
+     
+</beans>

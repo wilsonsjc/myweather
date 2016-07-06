@@ -1,0 +1,128 @@
+<%@ page language="java" %>
+<%@ page import="java.util.*" %>
+<%@ page import="com.disney.onesource.dcl.services.util.DclUrlPropertyReader" %>
+<%@ page import="com.disney.onesource.dcl.services.util.DclUrlValueObject" %>
+<%!
+	String prefix = null;
+	String genericPrefix = null;
+	String helpHref= null;
+%>
+
+<%
+	genericPrefix = "http://{host}:{port}/";
+	DclUrlPropertyReader propReader = new DclUrlPropertyReader();
+	List<DclUrlValueObject> urlValuList = propReader.getUrlInfo();
+	String[] temp = request.getRequestURI().split("\\/");
+	prefix = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+ temp[1];
+	genericPrefix = genericPrefix + temp[1];
+	helpHref = "/"+temp[1]+"/help.jsp";
+%>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>DCL Url List</title>
+	<link rel="stylesheet" type="text/css" href="dcl.css" media="all" />
+
+	<script language="javascript">
+	</script>
+</head>
+
+
+<body>
+
+<div id="header">
+<table border="0" cellspacing="0" cellpadding="5" width="100%" align="center">
+<tr> <td width="30%" align="left"></td>
+	 <td width="70%" align="left"><h2>Disney Cruise Line - Rest Service URL List</h2></td>
+</tr>
+</table>
+</div>
+
+<div id="header" >
+	<ul>
+		<li><a><b>Personal Naviagor</b></a></li><!-- these comments between li's solve a problem in IE that prevents spaces appearing between list items that appear on different lines in the source
+		-->
+		<span style="padding-left:1025px"></span><li><a href="<%=helpHref%>" target="<%=helpHref%>"><b>Help</b></a></li>
+	</ul>
+</div>
+
+<div id="content">
+<form name="pn">
+<table border="1" width="100%" align="center">
+<tr>
+	<td>		
+		<table bgcolor="#F0F0F0" border="0" cellspacing="0" cellpadding="10" width="100%">
+			<tr>
+				<td width="5%" valign="top" align="center"><b>Sl.No.</b></td>
+				<td width="15%" valign="top"><b>URL Name</b></td>
+				<td width="43%" valign="top" align="left"><b>URL Pattern</b></td>
+				<td width="37%" valign="top" align="left"><b>Example URL</b></td>
+			</tr>
+			<tr class="datarowone" >
+				<td  width="5%" valign="top" align="center">1</td>
+				<td  width="15%" valign="top"><%=urlValuList.get(0).getUrlName()%></td>
+				<td  width="43%" valign="top" align="left"><%=genericPrefix+urlValuList.get(0).getGenericUrl()%></td>
+				<td  width="37%" valign="top" align="left"><a href="<%=prefix+urlValuList.get(0).getExampleUrl()%>" target="<%=prefix+urlValuList.get(0).getExampleUrl()%>"><%=prefix+urlValuList.get(0).getExampleUrl()%> </a></td>
+			</tr>	
+			<tr class="datarowtwo">
+				<td  width="5%" valign="top" align="center">2</td>
+				<td  width="15%" valign="top"><%=urlValuList.get(1).getUrlName()%></td>
+				<td  width="43%" valign="top" align="left"><%=genericPrefix+urlValuList.get(1).getGenericUrl()%></td>
+				<td  width="37%" valign="top" align="left"><a href="<%=prefix+urlValuList.get(1).getExampleUrl()%>" target="<%=prefix+urlValuList.get(1).getExampleUrl()%>"><%=prefix+urlValuList.get(1).getExampleUrl()%> </a></td>
+			</tr>	
+		</table>		
+	</td>	
+</tr>
+</table>
+</form>
+</div>
+
+</br>
+
+<div id="header" >
+	<ul>
+		<li><a><b>Infocaster</b></a></li><!-- these comments between li's solve a problem in IE that prevents spaces appearing between list items that appear on different lines in the source
+		-->
+	</ul>
+</div>
+
+<div id="content">
+<form name="info">
+<table border="1" width="100%" align="center">
+<tr>
+	<td>		
+		<table bgcolor="#F0F0F0" border="0" cellspacing="0" cellpadding="10" width="100%">
+		<!-- 	<tr>
+				<td width="15%" valign="top"><b>URL Name</b></td>
+				<td width="45%" valign="top" align="left"><b>URL Pattern</b></td>
+				<td width="40%" valign="top" align="left"><b>Example URL</b></td>
+			</tr> -->
+			<%  int i=0;
+				String rowClass = "datarowtwo";
+				for(DclUrlValueObject urlObj : urlValuList ){
+					i++;
+					if (i > 2) 
+					{  if (rowClass.equals("datarowone"))
+							rowClass = "datarowtwo";
+					   else if  (rowClass.equals("datarowtwo"))
+							rowClass = "datarowone";
+			%>
+			<tr class=<%=rowClass%>>
+				<td  width="5%" valign="top" align="center"><%=i%></td>
+				<td width="15%" valign="top"><%=urlObj.getUrlName()%></td>
+				<td width="43%" valign="top" align="left" ><%=genericPrefix+urlObj.getGenericUrl()%></td>
+				<td width="37%" valign="top" align="left"><a href="<%=prefix+urlObj.getExampleUrl()%>" target="<%=prefix+urlObj.getExampleUrl()%>"><%=prefix+urlObj.getExampleUrl()%> </a></td>
+			</tr>	
+			<%} }%>		
+		</table>		
+	</td>	
+</tr>
+</table>
+</form>
+</div>
+
+</body>
+</html>

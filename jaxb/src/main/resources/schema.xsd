@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" jaxb:version="2.0">
+<xs:element name="weatherReport">
+  <xs:complexType>
+    <xs:sequence>
+            <xs:element name="cityName" type="xs:string"/>
+            <xs:element name="minTemp" type="xs:double"/>
+            <xs:element name="maxTemp" type="xs:double"/>
+            <xs:element name="tempType" type="xs:string"/>
+            <xs:element name="state" type="xs:string"/>
+            <xs:element name="zipcode" type="xs:int"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="imageURL" type="xs:string"/>
+            <xs:element ref ="details"/>
+            <xs:element ref ="forecast"/>
+            <xs:element ref ="days"/>
+     </xs:sequence>
+   </xs:complexType>
+</xs:element>
+<xs:element name="details">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="detail"  minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+<xs:element name="forecast">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="hourly"  minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+<xs:element name="days">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="day"  minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+<xs:element name="day">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name ="date" type="xs:string"/>
+			<xs:element name ="minTemp" type="xs:string"/>
+			<xs:element name="maxTemp" type="xs:string"/>
+			<xs:element name="imageURL" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+<xs:element name="hourly">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name ="time" type="xs:string"/>
+			<xs:element name ="temp" type="xs:string"/>
+			<xs:element name="imageURL" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+<xs:element name="detail">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name ="description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+</xs:schema>

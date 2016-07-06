@@ -1,0 +1,174 @@
+<%@ page language="java" %>
+<%@ page import="java.util.*" %>
+<%!
+	List<String> contentType = null;
+	List<String> assocContentType = null;
+	List<String> parameter = null;
+	List<String> dataType = null;
+	Map<String, String> parmInfo = null;
+	int slno =0;
+%>
+
+<%
+		contentType = new ArrayList<String>();
+		contentType.add("activity");
+		contentType.add("character");
+		contentType.add("product");
+		contentType.add("dining");
+		contentType.add("location");
+		contentType.add("policy");
+		contentType.add("advisory");
+		contentType.add("team");
+		
+		assocContentType = new ArrayList<String>();
+		assocContentType.add("activities");
+		assocContentType.add("characters");
+		assocContentType.add("products");
+		assocContentType.add("dinings");
+		assocContentType.add("locations");
+		assocContentType.add("policies");
+		assocContentType.add("advisories");
+		assocContentType.add(" ");
+		
+		parameter = new ArrayList<String>();
+		parameter.add("voyageNumber");
+		parameter.add("date");
+		parameter.add("id");
+		parameter.add("type");
+		parameter.add("subType");
+		parameter.add("classification");
+		parameter.add(" ");
+		parameter.add(" ");
+		
+		dataType = new ArrayList<String>();
+		dataType.add("AlphaNumeric - DD0088");
+		dataType.add("Integer - YYYYMMDD format");
+		dataType.add("Integer");
+		dataType.add("String");
+		dataType.add("String");
+		dataType.add("String");
+		dataType.add(" ");
+		dataType.add(" ");		
+
+%>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>DCL Url List</title>
+	<link rel="stylesheet" type="text/css" href="dcl.css" media="all" />
+	<script language="javascript">
+	</script>
+</head>
+
+
+<body>
+
+<div id="header">
+<table border="0" cellspacing="0" cellpadding="5" width="100%" align="center">
+<tr> <td width="30%" align="left"></td>
+	 <td width="70%" align="left"><h2>Disney Cruise Line - Rest Service Information List</h2></td>
+</tr>
+</table>
+</div>
+
+<div id="header" >
+	<ul>
+		<li><a><b>Parameter Info</b></a></li><!-- these comments between li's solve a problem in IE that prevents spaces appearing between list items that appear on different lines in the source
+		-->
+	</ul>
+</div>
+
+<div id="content">
+<form name="pn">
+<table border="1" width="100%" align="center" >
+<tr>
+		<td width="100%">		
+			<table bgcolor="#F0F0F0" border="0" cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td width="5%" valign="top"  align="center"><b>Sl.No.</b></td>
+					<td width="15%" valign="top" align="left"><b>contentType</b></td>
+					<td width="15%" valign="top" align="left"><b>associatedContentType</b></td>
+					<td width="15%" valign="top" align="left"><b>Parameter</b></td>
+					<td width="15%" valign="top" align="left"><b>Data Type</b></td>
+				</tr>
+				<%		slno=1;
+						for (String cntTyp : contentType) { 
+				%>	
+				<tr>
+					<td width="5%" valign="top" align="center"><%=slno%></td>
+					<td width="15%" valign="top" align="left"><%=cntTyp%></td>
+					<td width="15%" valign="top" align="left"><%=assocContentType.get(slno - 1)%></td>
+					<td width="15%" valign="top" align="left"><%=parameter.get(slno - 1)%></td>
+					<td width="15%" valign="top" align="left"><%=dataType.get(slno - 1)%></td>
+				</tr>	
+				<% slno++; } %>
+			</table>	
+		</td>
+
+</tr>
+</table>
+</form>
+</div>
+
+</br>
+<div id="header" >
+	<ul>
+		<li><a><b>Additional Info</b></a></li>
+	</ul>
+</div>
+
+<div id="content">
+<form name="new">
+<table border="1" width="100%" align="center">
+<tr>
+		<td width="100%"> 	
+			<table bgcolor="#F0F0F0" border="0" cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td width="5%" valign="top" align="center"><b>Sl.No.</b></td>
+					<td width="25%" valign="top" align="left"><b>Parameter</b></td>
+					<td width="70%" valign="top" align="left"><b>Additioonal Info</b></td>
+				</tr>
+				<tr>
+					<td width="5%" valign="top" align="center">1</td>
+					<td width="25%" valign="top" align="left">classification</td>
+					<td width="70%" valign="top" align="left">'/' need to replace by '|'. Example: Classifications string value <b>'/DCL/Location/General'</b> need to pass as <b>'Location|General'</b></td>
+				</tr>	
+				<tr>
+					<td width="5%" valign="top" align="center">2</td>
+					<td width="25%" valign="top" align="left">date</td>
+					<td width="70%" valign="top" align="left">date value need to pass in YYYYMMDD format. Example: <b>20110928</b>.</td>
+				</tr>		
+				<tr>
+					<td width="5%" valign="top" align="center">3</td>
+					<td width="25%" valign="top" align="left">today, tomorrow and voyage call</td>
+					<td width="70%" valign="top" align="left">Today's date & time uses system date. If you want to reset, then 'today' query parameter need to pass in the URL as<br>
+															  <b>'?today=YYYYMMDD'</b>. <br>
+															Example1: If you want to see today's  scheduled activities then the URL will be <b>'content/today/activity'</b>. <br> 
+															Example2: If you want to see scheduled characters on October 28th 2011 then the URL will be <br> <b>'/content/today/character?today=20111028'</b></td>
+				</tr>	
+				<tr>
+					<td width="5%" valign="top" align="center">4</td>
+					<td width="25%" valign="top" align="left">remaining call</td>
+					<td width="70%" valign="top" align="left">Any URL with remaining will return list of contents scheduled after current time. <br> If you like to reset the time then pass time with date 
+					Example: <b>'content/remaining/today/activity?today=20110620 14:30'</b></td>
+				</tr>	
+				<tr>
+					<td width="5%" valign="top" align="center">4</td>
+					<td width="25%" valign="top" align="left">all</td>
+					<td width="70%" valign="top" align="left">If you like to see all contents associated to particular content. <br>
+					Example: <b>'/content/today/location/797/all'</b>  will return all contents associated to the location 797.</td>
+				</tr>												
+			</table>	
+		</td>
+	
+</tr>
+</table>
+</form>
+</div>
+
+
+</body>
+</html>
