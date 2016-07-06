@@ -10,12 +10,23 @@
 			http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	
-	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<!--  <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/> -->
 
 	<context:component-scan base-package="com.myweather.dao" />
+	<context:component-scan base-package="com.myweather.rest.controller" />
+	<!--  <mvc:annotation-driven /> -->
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/MYWEATHER" expected-type="javax.sql.DataSource" />
+	
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <ref bean="jacksonMessageConverter"/>
+	        </list>
+	    </property>
+	</bean>
 	
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
         <property name="dataSource" ref="dataSource"/>
@@ -47,21 +58,12 @@
 	</bean>
 	<bean id="zipCodeDao" class="com.myweather.dao.ZipcodeDAO" parent="abstractDao" />
 	
-	<bean id="weatherService" class="com.myweather.service.WeatherService" >
+	<bean id="weatherService" class="com.myweather.service.WeatherServiceImpl" >
 		<constructor-arg ref="zipCodeDao"/>
-		<property name="weatherMapper" ref="abc" />
-	</bean>
-	<bean id="myWeatherEndPoint" class="com.myweather.endpoint.MyWeatherEndPoint" >
-		<property name="weatherService" ref="weatherService" />
+		<property name="weatherMapper" ref="wMapper" />
 	</bean>
 	
-	<bean id="abc" class="com.myweather.service.mapper.WeatherMapper" />
-
-	<jaxrs:server id="dclRestServer" address="/">
-		<jaxrs:serviceBeans>
-			<ref bean="myWeatherEndPoint" />
-		</jaxrs:serviceBeans>
-	</jaxrs:server>
+	<bean id="wMapper" class="com.myweather.service.mapper.WeatherMapper" />
 	
      
 </beans>

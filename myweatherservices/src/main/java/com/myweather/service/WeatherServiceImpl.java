@@ -12,25 +12,19 @@ import com.myweather.jaxb.content.*;
 import com.myweather.model.*;
 import com.myweather.service.mapper.WeatherMapper;
 
-public class WeatherService {
-	private static Logger log = Logger.getLogger(WeatherService.class);
-	private ZipcodeDAO zipcodeDAO;
-	private WeatherMapper weatherMapper;
+
+public class WeatherServiceImpl implements WeatherServiceIF {
+	
+	private static Logger log = Logger.getLogger(WeatherServiceImpl.class);
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
-	public WeatherService(ZipcodeDAO zipcodeDAO)
-	{
+	private ZipcodeDAO zipcodeDAO;
+	private WeatherMapper weatherMapper;
+	
+	public WeatherServiceImpl(ZipcodeDAO zipcodeDAO) {
 		this.zipcodeDAO = zipcodeDAO;
 	}
 	
-	/*public ZipcodeDAO getZipcodeDAO() {
-		return zipcodeDAO;
-	}
-
-	public void setZipcodeDAO(ZipcodeDAO zipcodeDAO) {
-		this.zipcodeDAO = zipcodeDAO;
-	} */
-
 	public WeatherMapper getWeatherMapper() {
 		return weatherMapper;
 	}
@@ -38,7 +32,7 @@ public class WeatherService {
 	public void setWeatherMapper(WeatherMapper weatherMapper) {
 		this.weatherMapper = weatherMapper;
 	}
-		
+	
 	public WeatherReport getWeatherReportByZipCode(Integer zipcd)
 	{
 		zipcodeDAO.enableTodayDateFilter();
