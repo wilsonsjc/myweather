@@ -85,7 +85,8 @@
 		            <version>2.3</version>
 		            <configuration>
 		             <warName>myweather</warName>
-		             <outputDirectory>C:\software\apache-tomcat-7.0.59\webapps</outputDirectory>
+		            <!--  <outputDirectory>C:\software\apache-tomcat-7.0.59\webapps</outputDirectory> -->
+		            <outputDirectory>C:\software\sts-bundle\pivotal-tc-server-developer-3.0.2.SR2\base-instance\webapps</outputDirectory>
 		            </configuration>
 		        </plugin>
 

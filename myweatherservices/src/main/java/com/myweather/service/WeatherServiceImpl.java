@@ -11,6 +11,10 @@ import com.myweather.dao.ZipcodeDAO;
 import com.myweather.jaxb.content.*;
 import com.myweather.model.*;
 import com.myweather.service.mapper.WeatherMapper;
+/*import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonInputMessage;
+import org.springframework.http.converter.json.MappingJacksonValue;*/
 
 
 public class WeatherServiceImpl implements WeatherServiceIF {
